@@ -1,0 +1,894 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API CinéExplore",
+    "description": "API REST pour explorer les films et acteurs américains de 1980 à 2023",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Projet SAÉ 402"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Films",
+      "description": "Opérations liées aux films"
+    },
+    {
+      "name": "Acteurs",
+      "description": "Opérations liées aux acteurs"
+    },
+    {
+      "name": "Genres",
+      "description": "Opérations liées aux genres de films"
+    },
+    {
+      "name": "Scores",
+      "description": "Opérations liées aux scores des joueurs"
+    },
+    {
+      "name": "Statistiques",
+      "description": "Opérations liées aux statistiques générales"
+    }
+  ],
+  "paths": {
+    "/films": {
+      "get": {
+        "tags": ["Films"],
+        "summary": "Récupérer tous les films",
+        "description": "Retourne la liste complète des films dans la base de données",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 1150
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Film"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/films/random": {
+      "get": {
+        "tags": ["Films"],
+        "summary": "Récupérer un film aléatoire",
+        "description": "Retourne un film choisi aléatoirement dans la base de données",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Film"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/films/{id}": {
+      "get": {
+        "tags": ["Films"],
+        "summary": "Récupérer un film par son ID",
+        "description": "Retourne les détails d'un film spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID du film à récupérer (format: movie_X)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Film"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Film non trouvé",
+            "schema": {
+              "$ref": "#/definitions/Error404"
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/films/{id}/acteurs": {
+      "get": {
+        "tags": ["Films"],
+        "summary": "Récupérer les acteurs d'un film",
+        "description": "Retourne la liste des acteurs qui ont joué dans un film spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID du film dont on veut récupérer les acteurs (format: movie_X)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 5
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Acteur"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/films/{id}/genres": {
+      "get": {
+        "tags": ["Films"],
+        "summary": "Récupérer les genres d'un film",
+        "description": "Retourne la liste des genres associés à un film spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID du film dont on veut récupérer les genres (format: movie_X)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Genre"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/acteurs": {
+      "get": {
+        "tags": ["Acteurs"],
+        "summary": "Récupérer tous les acteurs",
+        "description": "Retourne la liste complète des acteurs dans la base de données",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 500
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Acteur"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/acteurs/random": {
+      "get": {
+        "tags": ["Acteurs"],
+        "summary": "Récupérer un acteur aléatoire",
+        "description": "Retourne un acteur choisi aléatoirement dans la base de données",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Acteur"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/acteurs/{id}": {
+      "get": {
+        "tags": ["Acteurs"],
+        "summary": "Récupérer un acteur par son ID",
+        "description": "Retourne les détails d'un acteur spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de l'acteur à récupérer",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Acteur"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Acteur non trouvé",
+            "schema": {
+              "$ref": "#/definitions/Error404"
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/acteurs/{id}/films": {
+      "get": {
+        "tags": ["Acteurs"],
+        "summary": "Récupérer les films d'un acteur",
+        "description": "Retourne la liste des films dans lesquels a joué un acteur spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de l'acteur dont on veut récupérer les films",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Film"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/genres": {
+      "get": {
+        "tags": ["Genres"],
+        "summary": "Récupérer tous les genres",
+        "description": "Retourne la liste complète des genres dans la base de données",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 15
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Genre"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/genres/{id}": {
+      "get": {
+        "tags": ["Genres"],
+        "summary": "Récupérer un genre par son ID",
+        "description": "Retourne les détails d'un genre spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID du genre à récupérer",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Genre"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Genre non trouvé",
+            "schema": {
+              "$ref": "#/definitions/Error404"
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/genres/{id}/films": {
+      "get": {
+        "tags": ["Genres"],
+        "summary": "Récupérer les films d'un genre",
+        "description": "Retourne la liste des films associés à un genre spécifié par son ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID du genre dont on veut récupérer les films",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 30
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Film"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/scores": {
+      "get": {
+        "tags": ["Scores"],
+        "summary": "Récupérer le top 10 des scores",
+        "description": "Retourne les 10 meilleurs scores enregistrés dans le jeu",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "count": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Score"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Scores"],
+        "summary": "Enregistrer un nouveau score",
+        "description": "Sauvegarde le score d'un joueur. Si le joueur existe déjà, le score sera mis à jour uniquement s'il est supérieur au précédent",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "score",
+            "in": "body",
+            "description": "Objet score à enregistrer",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "playerName": {
+                  "type": "string",
+                  "example": "JohnDoe"
+                },
+                "score": {
+                  "type": "integer",
+                  "example": 250
+                },
+                "gameDuration": {
+                  "type": "integer",
+                  "example": 380
+                },
+                "itemsDiscovered": {
+                  "type": "integer",
+                  "example": 15
+                }
+              },
+              "required": ["playerName", "score"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Score sauvegardé avec succès"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "playerName": {
+                      "type": "string",
+                      "example": "JohnDoe"
+                    },
+                    "score": {
+                      "type": "integer",
+                      "example": 250
+                    },
+                    "updated": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requête invalide",
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/scores/{playerName}": {
+      "get": {
+        "tags": ["Scores"],
+        "summary": "Récupérer le meilleur score d'un joueur",
+        "description": "Retourne le meilleur score enregistré pour un joueur spécifié par son nom",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "playerName",
+            "in": "path",
+            "description": "Nom du joueur dont on veut récupérer le score",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Score"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Joueur non trouvé",
+            "schema": {
+              "$ref": "#/definitions/Error404"
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/statistiques": {
+      "get": {
+        "tags": ["Statistiques"],
+        "summary": "Récupérer les statistiques générales",
+        "description": "Retourne diverses statistiques sur la base de données : nombre de films, d'acteurs, etc.",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Opération réussie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "$ref": "#/definitions/Statistiques"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Film": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "Inception"
+        },
+        "year": {
+          "type": "integer",
+          "example": 2010
+        }
+      }
+    },
+    "Acteur": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Leonardo DiCaprio"
+        }
+      }
+    },
+    "Genre": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "genre": {
+          "type": "string",
+          "example": "Action"
+        }
+      }
+    },
+    "Score": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "player_name": {
+          "type": "string",
+          "example": "JohnDoe"
+        },
+        "score": {
+          "type": "integer",
+          "example": 250
+        },
+        "game_duration": {
+          "type": "integer",
+          "example": 380
+        },
+        "items_discovered": {
+          "type": "integer",
+          "example": 15
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-03-15T14:30:00Z"
+        }
+      }
+    },
+    "Statistiques": {
+      "type": "object",
+      "properties": {
+        "totalFilms": {
+          "type": "integer",
+          "example": 250
+        },
+        "totalActeurs": {
+          "type": "integer",
+          "example": 500
+        },
+        "totalRelations": {
+          "type": "integer",
+          "example": 2500
+        },
+        "moyenneActeursParFilm": {
+          "type": "number",
+          "example": 10
+        },
+        "filmsParAnnee": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "annee": {
+                "type": "integer",
+                "example": 2010
+              },
+              "nombre_films": {
+                "type": "integer",
+                "example": 15
+              }
+            }
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "message": {
+          "type": "string",
+          "example": "Erreur lors de la récupération des données"
+        },
+        "error": {
+          "type": "string",
+          "example": "Erreur de connexion à la base de données"
+        }
+      }
+    },
+    "Error404": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "message": {
+          "type": "string",
+          "example": "Ressource non trouvée"
+        }
+      }
+    },
+    "Error400": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "message": {
+          "type": "string",
+          "example": "Le nom du joueur et le score sont requis"
+        }
+      }
+    }
+  }
+}

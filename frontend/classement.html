@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinéExplore - Classement et Statistiques</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/classement.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>CinéExplore</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="index.html#jeu">Jouer</a></li>
+        <li><a href="classement.html" class="active">Classement</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="classement" class="section active">
+      <div class="container">
+        <h2>Classement et Statistiques</h2>
+        
+        <div class="statistiques-container">
+          <div class="carte-stat">
+            <h3>Score Total</h3>
+            <p id="score-total">Chargement...</p>
+          </div>
+          <div class="carte-stat">
+            <h3>Parties Jouées</h3>
+            <p id="total-parties">Chargement...</p>
+          </div>
+          <div class="carte-stat">
+            <h3>Score Moyen</h3>
+            <p id="score-moyen">Chargement...</p>
+          </div>
+          <div class="carte-stat">
+            <h3>Durée Moyenne</h3>
+            <p id="duree-moyenne">Chargement...</p>
+          </div>
+        </div>
+        
+        <div class="tableau-classement">
+          <h3>Meilleurs Scores</h3>
+          <table class="tableau-scores">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Joueur</th>
+                <th>Score</th>
+                <th>Éléments découverts</th>
+                <th>Durée</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="corps-tableau">
+              <!-- Les données du classement seront injectées ici -->
+              <tr>
+                <td colspan="6" class="chargement">Chargement des scores...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Projet SAÉ 402 - Découverte interactive de films - 2024</p>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/statistiques.js"></script>
+</body>
+</html>

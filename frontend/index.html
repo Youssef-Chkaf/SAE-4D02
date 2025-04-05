@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinéExplore - Découverte de Films</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/jeu.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <header>
+    <h1>CinéExplore</h1>
+    <nav>
+      <ul>
+        <li><a href="#accueil" class="active" data-section="accueil">Accueil</a></li>
+        <li><a href="#jeu" data-section="jeu">Jouer</a></li>
+        <li><a href="classement.html">Classement</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Section Accueil -->
+    <section id="accueil" class="section active">
+      <div class="container">
+        <h2>Bienvenue sur CinéExplore</h2>
+        <p>Découvrez le monde du cinéma américain de 1980 à 2023 à travers notre nouveau jeu !</p>
+        <p>Explorez les connexions entre acteurs et films en développant un graphe interactif.</p>
+        <p>Cliquez sur les nœuds du graphe pour découvrir de nouveaux films et acteurs !</p>
+        <button id="btn-jouer" class="btn-primary">Commencer à jouer</button>
+      </div>
+    </section>
+
+    <!-- Section Jeu -->
+    <section id="jeu" class="section">
+      <div class="container">
+        <h2>Exploration cinématographique</h2>
+        <div class="game-controls">
+          <button id="nouveau-jeu" class="btn-primary">Nouvelle partie</button>
+          <button id="save-score" class="btn-secondary">Enregistrer mon score</button>
+        </div>
+        <div class="info-banner">
+          <div id="objectif">Cliquez sur les nœuds du graphe pour découvrir de nouveaux films et acteurs</div>
+          <div id="score">Score: 0</div>
+        </div>
+        <div class="game-container">
+          <div id="graphe-container"></div>
+          <!-- La div game-interaction a été supprimée car tout le contenu est géré par les modals -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Projet SAÉ 402 - Découverte interactive de films - 2024</p>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/graphe.js"></script>
+  <script src="assets/js/niveauxDifficulte.js"></script>
+  <script src="assets/js/jeu.js"></script>
+  <script src="assets/js/modesThematiques.js"></script>
+  <script src="assets/js/modeChronometré.js"></script>
+</body>
+</html>
